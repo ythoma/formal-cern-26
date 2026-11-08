@@ -1,0 +1,51 @@
+[tasks]
+cover
+prove0 prove
+prove1 prove
+prove3 prove
+prove7 prove
+prove9 prove
+prove12 prove
+prove16 prove expect_fail
+prove17 prove expect_fail
+prove18 prove expect_fail
+prove19 prove expect_fail
+prove20 prove expect_fail
+prove21 prove expect_fail
+
+[options]
+
+prove: mode prove
+cover: mode cover
+
+expect_fail: expect fail
+
+[engines]
+cover: smtbmc z3
+prove: abc pdr
+
+[script]
+ghdl --std=08 --work=aff_min_max affichage.vhd -e affichage
+ghdl --std=08 --work=aff_min_max bin_lin.vhd -e bin_lin
+ghdl --std=08 --work=aff_min_max comparator_8bits.vhd -e comparator_4bits
+cover: ghdl --std=08 -gERRNO=0 linear_min_max.vhd min_max.psl -e linear_min_max
+prove0: ghdl --std=08 -gERRNO=0 linear_min_max.vhd min_max.psl -e linear_min_max
+prove1: ghdl --std=08 -gERRNO=1 linear_min_max.vhd min_max.psl -e linear_min_max
+prove3: ghdl --std=08 -gERRNO=3 linear_min_max.vhd min_max.psl -e linear_min_max
+prove7: ghdl --std=08 -gERRNO=7 linear_min_max.vhd min_max.psl -e linear_min_max
+prove9: ghdl --std=08 -gERRNO=9 linear_min_max.vhd min_max.psl -e linear_min_max
+prove12: ghdl --std=08 -gERRNO=12 linear_min_max.vhd min_max.psl -e linear_min_max
+prove16: ghdl --std=08 -gERRNO=16 linear_min_max.vhd min_max.psl -e linear_min_max
+prove17: ghdl --std=08 -gERRNO=17 linear_min_max.vhd min_max.psl -e linear_min_max
+prove18: ghdl --std=08 -gERRNO=18 linear_min_max.vhd min_max.psl -e linear_min_max
+prove19: ghdl --std=08 -gERRNO=19 linear_min_max.vhd min_max.psl -e linear_min_max
+prove20: ghdl --std=08 -gERRNO=20 linear_min_max.vhd min_max.psl -e linear_min_max
+prove21: ghdl --std=08 -gERRNO=21 linear_min_max.vhd min_max.psl -e linear_min_max
+prep -top linear_min_max
+
+[files]
+../src/affichage.vhd
+../src/bin_lin.vhd
+../src/comparator_8bits.vhd
+../src/linear_min_max.vhd
+../src_tb/min_max.psl

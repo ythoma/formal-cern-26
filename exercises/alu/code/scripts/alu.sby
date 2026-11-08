@@ -1,0 +1,51 @@
+[tasks]
+cover
+prove0 prove
+prove1 prove
+prove3 prove
+prove7 prove
+prove9 prove
+prove12 prove
+prove16 prove expect_fail
+prove17 prove expect_fail
+prove18 prove expect_fail
+prove19 prove expect_fail
+prove20 prove expect_fail
+prove21 prove expect_fail
+prove22 prove expect_fail
+prove23 prove expect_fail
+prove24 prove expect_fail
+
+[options]
+
+cover: mode cover
+prove: mode prove
+
+expect_fail: expect fail
+
+[engines]
+cover: smtbmc z3
+prove: abc pdr
+
+[script]
+cover: ghdl --std=08 -gSIZE=8 -gERRNO=0 alu.vhd alu.psl -e alu
+prove0: ghdl --std=08 -gSIZE=8 -gERRNO=0 alu.vhd alu.psl -e alu
+prove1: ghdl --std=08 -gSIZE=8 -gERRNO=1 alu.vhd alu.psl -e alu
+prove3: ghdl --std=08 -gSIZE=8 -gERRNO=3 alu.vhd alu.psl -e alu
+prove7: ghdl --std=08 -gSIZE=8 -gERRNO=7 alu.vhd alu.psl -e alu
+prove9: ghdl --std=08 -gSIZE=8 -gERRNO=9 alu.vhd alu.psl -e alu
+prove12: ghdl --std=08 -gSIZE=8 -gERRNO=12 alu.vhd alu.psl -e alu
+prove16: ghdl --std=08 -gSIZE=8 -gERRNO=16 alu.vhd alu.psl -e alu
+prove17: ghdl --std=08 -gSIZE=8 -gERRNO=17 alu.vhd alu.psl -e alu
+prove18: ghdl --std=08 -gSIZE=8 -gERRNO=18 alu.vhd alu.psl -e alu
+prove19: ghdl --std=08 -gSIZE=8 -gERRNO=19 alu.vhd alu.psl -e alu
+prove20: ghdl --std=08 -gSIZE=8 -gERRNO=20 alu.vhd alu.psl -e alu
+prove21: ghdl --std=08 -gSIZE=8 -gERRNO=21 alu.vhd alu.psl -e alu
+prove22: ghdl --std=08 -gSIZE=8 -gERRNO=22 alu.vhd alu.psl -e alu
+prove23: ghdl --std=08 -gSIZE=8 -gERRNO=23 alu.vhd alu.psl -e alu
+prove24: ghdl --std=08 -gSIZE=8 -gERRNO=24 alu.vhd alu.psl -e alu
+prep -top alu
+
+[files]
+../src/alu.vhd
+../src_tb/alu.psl
