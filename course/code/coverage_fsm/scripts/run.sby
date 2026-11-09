@@ -1,0 +1,16 @@
+[tasks]
+cover
+
+[options]
+cover: mode cover
+cover: depth 10
+
+[engines]
+cover: smtbmc z3
+
+[script]
+ghdl --std=08 -fpsl coverage_fsm.vhd -e coverage_fsm
+prep -top coverage_fsm
+
+[files]
+../src_vhdl/coverage_fsm.vhd
