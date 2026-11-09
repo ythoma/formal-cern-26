@@ -1,0 +1,46 @@
+[tasks]
+cover ERRNO0
+bmc0 ERRNO0 bmc 
+bmc1 ERRNO1 bmc expect_fail
+bmc2 ERRNO2 bmc expect_fail
+bmc3 ERRNO3 bmc expect_fail
+bmc4 ERRNO4 bmc expect_fail
+bmc5 ERRNO5 bmc expect_fail
+bmc6 ERRNO6 bmc expect_fail
+prove0 ERRNO0 prove
+prove1 ERRNO1 prove expect_fail
+prove2 ERRNO2 prove expect_fail
+prove3 ERRNO3 prove expect_fail
+prove4 ERRNO4 prove expect_fail
+prove5 ERRNO5 prove expect_fail
+prove6 ERRNO6 prove expect_fail
+
+[options]
+depth 300
+
+cover: mode cover
+bmc: mode bmc
+prove: mode prove
+
+expect_fail: expect fail
+
+[engines]
+cover: smtbmc z3
+bmc: abc bmc3
+prove: abc pdr
+
+[script]
+
+ERRNO0: ghdl --std=08 -gERRNO=0 elevator_fsm.vhd elevator_fsm.psl -e elevator_fsm
+ERRNO1: ghdl --std=08 -gERRNO=1 elevator_fsm.vhd elevator_fsm.psl -e elevator_fsm
+ERRNO2: ghdl --std=08 -gERRNO=2 elevator_fsm.vhd elevator_fsm.psl -e elevator_fsm
+ERRNO3: ghdl --std=08 -gERRNO=3 elevator_fsm.vhd elevator_fsm.psl -e elevator_fsm
+ERRNO4: ghdl --std=08 -gERRNO=4 elevator_fsm.vhd elevator_fsm.psl -e elevator_fsm
+ERRNO5: ghdl --std=08 -gERRNO=5 elevator_fsm.vhd elevator_fsm.psl -e elevator_fsm
+ERRNO6: ghdl --std=08 -gERRNO=6 elevator_fsm.vhd elevator_fsm.psl -e elevator_fsm
+
+prep -top elevator_fsm
+
+[files]
+../src/elevator_fsm.vhd
+../src_tb/elevator_fsm.psl
