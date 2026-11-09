@@ -1,0 +1,41 @@
+[tasks]
+cover ERRNO0
+bmc0 ERRNO0 bmc
+bmc1 ERRNO1 bmc expect_fail
+bmc2 ERRNO2 bmc expect_fail
+bmc3 ERRNO3 bmc expect_fail
+bmc4 ERRNO4 bmc expect_fail
+bmc5 ERRNO5 bmc expect_fail
+bmc6 ERRNO6 bmc expect_fail
+# prove prove
+
+[options]
+mode bmc
+depth 80
+
+cover: mode cover
+bmc: mode bmc
+# prove: mode prove
+
+expect_fail: expect fail
+
+
+[engines]
+cover: smtbmc z3
+bmc: abc bmc3
+# prove: abc pdr
+
+[script]
+ERRNO0: ghdl --std=08 -gERRNO=0 iop_pkg.vhd axis_upscaler.vhd axis_upscaler.psl -e axis_upscaler
+ERRNO1: ghdl --std=08 -gERRNO=1 iop_pkg.vhd axis_upscaler.vhd axis_upscaler.psl -e axis_upscaler
+ERRNO2: ghdl --std=08 -gERRNO=2 iop_pkg.vhd axis_upscaler.vhd axis_upscaler.psl -e axis_upscaler
+ERRNO3: ghdl --std=08 -gERRNO=3 iop_pkg.vhd axis_upscaler.vhd axis_upscaler.psl -e axis_upscaler
+ERRNO4: ghdl --std=08 -gERRNO=4 iop_pkg.vhd axis_upscaler.vhd axis_upscaler.psl -e axis_upscaler
+ERRNO5: ghdl --std=08 -gERRNO=5 iop_pkg.vhd axis_upscaler.vhd axis_upscaler.psl -e axis_upscaler
+ERRNO6: ghdl --std=08 -gERRNO=6 iop_pkg.vhd axis_upscaler.vhd axis_upscaler.psl -e axis_upscaler
+prep -top axis_upscaler
+
+[files]
+../src/iop_pkg.vhd
+../src/axis_upscaler.vhd
+../src_tb/axis_upscaler.psl

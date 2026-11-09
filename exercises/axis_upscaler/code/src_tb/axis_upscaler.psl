@@ -1,0 +1,115 @@
+
+vunit axis_upscaler_psl(axis_upscaler) {
+
+    default clock is rising_edge(clk);
+
+    constant FACTOR : integer := DATA_OUT_WIDTH / DATA_IN_WIDTH;
+
+    signal trans_in : std_logic;
+    signal trans_in_no_last : std_logic;
+
+    signal slast : std_logic;
+    signal mlast : std_logic;
+
+    -- There is a data consumed on the input
+    trans_in <= (s_axis_tvalid and s_axis_tready);
+
+    -- There is a data consumed, but not the last
+    trans_in_no_last <= (s_axis_tvalid and s_axis_tready and not s_axis_tlast);
+
+    -- There is a last data consumed on the input
+    slast <= (s_axis_tvalid and s_axis_tready and s_axis_tlast);
+
+    mlast <= (m_axis_tvalid and m_axis_tready and m_axis_tlast);
+
+    -- We assume a reset
+    assume {rst};
+
+
+    ---------------------------------------------------------------------------
+    -- s_axis_tready output validation
+    --
+    -- s_axis_tready should not stay low too long.
+    ---------------------------------------------------------------------------
+
+
+
+    ---------------------------------------------------------------------------
+    -- m_axis_tlast output validation
+    --
+    -- m_axis_tlast should only be high 1 to 4 clock cycles after the last input
+    -- is received, never else.
+    -- When asserted it should stay high until m_axis_tready is high.
+    ---------------------------------------------------------------------------
+
+
+
+    ---------------------------------------------------------------------------
+    -- m_axis_tvalid output validation
+    --
+    -- When high, m_axis_tvalid should stay high until m_axis_tready is high
+    -- On the last input, m_axis_tvalid should go high at most 4 clock cycles
+    -- after.
+    ---------------------------------------------------------------------------
+
+
+
+
+    ---------------------------------------------------------------------------
+    -- m_axis_tdata output validation
+    --
+    -- A data seen at the input should be seen soon after on the output.
+    -- Two consecutive input data should be in the same order on the output.
+    -- Padding should be applied with the last data if required.
+    -- 
+    -- This is definitely complex to handle.
+    -- Here are some helper functions in case it could be useful.
+    ---------------------------------------------------------------------------
+
+
+    -- Function that returns true if the data_in is found in data_out. data_in shall be aligned.
+    function data_in_output(data_in: std_logic_vector(DATA_IN_WIDTH-1 downto 0);
+                            data_out: std_logic_vector(DATA_OUT_WIDTH-1 downto 0)) return boolean is
+    begin
+        for i in 0 to DATA_OUT_WIDTH / DATA_IN_WIDTH - 1 loop
+            if (data_in = data_out((i+1)*DATA_IN_WIDTH-1 downto i*DATA_IN_WIDTH)) then
+                return true;
+            end if;
+        end loop;
+        return false;
+    end;
+
+    -- Function that returns true if the data_in is found in data_out. data_in shall be aligned.
+    function data_in_output_loc(data_in: std_logic_vector(DATA_IN_WIDTH-1 downto 0);
+                                data_out: std_logic_vector(DATA_OUT_WIDTH-1 downto 0);
+                                loc: integer) return boolean is
+    begin
+        if (data_in = data_out((loc+1)*DATA_IN_WIDTH-1 downto loc*DATA_IN_WIDTH)) then
+            return true;
+        end if;
+        return false;
+    end;
+
+    -- Function that returns true if the data_in is found in data_out from location loc.
+    -- data_in shall be aligned.
+    function data_in_output_from_loc(data_in: std_logic_vector(DATA_IN_WIDTH-1 downto 0);
+                                data_out: std_logic_vector(DATA_OUT_WIDTH-1 downto 0);
+                                loc: integer) return boolean is
+    begin
+        for i in loc to FACTOR - 1 loop
+            if (data_in /= data_out((i+1)*DATA_IN_WIDTH-1 downto i*DATA_IN_WIDTH)) then
+                return false;
+            end if;
+        end loop;
+        return true;
+    end;
+
+
+
+    ---------------------------------------------------------------------------
+    -- Padding
+    ---------------------------------------------------------------------------
+
+
+
+}
