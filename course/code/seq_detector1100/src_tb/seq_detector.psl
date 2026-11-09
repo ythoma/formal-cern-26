@@ -1,0 +1,76 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+vunit seq_detector_psl(seq_detector(behave)) {
+
+    default clock is rising_edge(clk);
+
+    assume rst;
+
+    -------------------------------------------------------------------------------
+    --  Assertions about the output detector
+    -------------------------------------------------------------------------------
+
+
+    sequence seq is {d;d;not d;not d};
+
+    assert always (seq |-> detected) abort rst;
+
+    assert always ({d;d;not d;not d} |-> detected) abort rst;
+
+    assert always ({d;d[+];not d;not d} |-> detected) abort rst;
+
+
+    attribute anyseq : boolean;
+
+    signal de: std_logic;
+
+    attribute anyseq of de : signal is true;
+  
+    assume always ({d;d;not d;not d} |-> de) abort rst;
+    det_low2: assert always (detected -> de) abort rst;
+
+
+
+
+    property Det_Only_After_1100 is
+    always (detected |-> (d = '0' and prev(d) = '0' and prev(prev(d)) = '1' and prev(prev(prev(d))) = '1'));
+
+    assert Det_Only_After_1100;
+
+
+
+    property Det_Only_After_1100b is
+    always (detected |-> (d = '0' and prev(d) = '0' and prev(d,2) = '1' and prev(d,3) = '1'));
+
+    assert Det_Only_After_1100b;
+
+
+    assert never {{detected[->2]} within {d;d;not d;not d}};
+
+    assert never {{detected[->2]} && {d;d;not d;not d}};
+
+
+
+    property Det_Only_After_1100c is
+    always (detected |-> (d = '0' and prev(d) = '0' and prev(prev(d)) = '1' and prev(prev(prev(d))) = '1'));
+
+    assert Det_Only_After_1100c;
+
+    assert never {{detected[->1];detected} within {d;d;not d;not d}};
+
+    assert never {{detected[->1];detected} && {d;d;not d;not d}};
+
+
+    cover {state = s1; state = s2};
+    cover {state = s1; state = s1};
+    cover {state = s2; state = s1};
+    cover {state = s2; state = s3};
+    cover {state = s3; state = s3};
+    cover {state = s3; state = s4};
+    cover {state = s4; state = s1};
+    cover {state = s4; state = s2};
+}
+
+
