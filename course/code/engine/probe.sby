@@ -1,0 +1,23 @@
+[tasks]
+bmc
+prove
+cover
+
+[options]
+bmc: mode bmc
+bmc: depth 8
+prove: mode prove
+cover: mode cover
+cover: depth 8
+
+[engines]
+bmc: abc bmc3
+prove: abc pdr
+cover: smtbmc z3
+
+[script]
+ghdl --std=08 -fpsl engine_probe.vhd -e engine_probe
+prep -top engine_probe
+
+[files]
+engine_probe.vhd
