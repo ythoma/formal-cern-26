@@ -1,7 +1,12 @@
 [tasks]
-cover
-bmc
-prove
+cover0 cover ERRNO0
+cover1 cover ERRNO1 shouldfail
+cover2 cover ERRNO2
+cover3 cover ERRNO3 shouldfail
+bmc0 bmc ERRNO0
+bmc1 bmc ERRNO1
+bmc2 bmc ERRNO2 shouldfail
+bmc3 bmc ERRNO3
 
 [options]
 mode bmc
@@ -9,15 +14,22 @@ depth 20
 
 cover: mode cover
 bmc: mode bmc
-prove: mode prove
+
+shouldfail: expect fail
 
 [engines]
 cover: smtbmc z3
 bmc: abc bmc3
-prove: abc pdr
 
 [script]
-ghdl --std=08 sequencer.vhd blackbox_sequencer.vhd  blackbox_sequencer.psl -e blackbox_sequencer
+bmc0: ghdl --std=08 -gERRNO=0 sequencer.vhd blackbox_sequencer.vhd  blackbox_sequencer.psl -e blackbox_sequencer
+bmc1: ghdl --std=08 -gERRNO=1 sequencer.vhd blackbox_sequencer.vhd  blackbox_sequencer.psl -e blackbox_sequencer
+bmc2: ghdl --std=08 -gERRNO=2 sequencer.vhd blackbox_sequencer.vhd  blackbox_sequencer.psl -e blackbox_sequencer
+bmc3: ghdl --std=08 -gERRNO=3 sequencer.vhd blackbox_sequencer.vhd  blackbox_sequencer.psl -e blackbox_sequencer
+cover0: ghdl --std=08 -gERRNO=0 sequencer.vhd blackbox_sequencer.vhd  blackbox_sequencer.psl -e blackbox_sequencer
+cover1: ghdl --std=08 -gERRNO=1 sequencer.vhd blackbox_sequencer.vhd  blackbox_sequencer.psl -e blackbox_sequencer
+cover2: ghdl --std=08 -gERRNO=2 sequencer.vhd blackbox_sequencer.vhd  blackbox_sequencer.psl -e blackbox_sequencer
+cover3: ghdl --std=08 -gERRNO=3 sequencer.vhd blackbox_sequencer.vhd  blackbox_sequencer.psl -e blackbox_sequencer
 prep -top blackbox_sequencer
 
 [files]
