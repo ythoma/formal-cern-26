@@ -1,0 +1,48 @@
+[tasks]
+cover ERRNO0
+bmc0 ERRNO0 bmc
+bmc1 ERRNO1 bmc expect_fail
+bmc2 ERRNO2 bmc expect_fail
+bmc3 ERRNO3 bmc expect_fail
+bmc4 ERRNO4 bmc expect_fail
+bmc5 ERRNO5 bmc expect_fail
+bmc6 ERRNO6 bmc expect_fail
+bmc7 ERRNO7 bmc expect_fail
+prove0 ERRNO0 prove
+prove1 ERRNO1 prove expect_fail
+prove2 ERRNO2 prove expect_fail
+prove3 ERRNO3 prove expect_fail
+prove4 ERRNO4 prove expect_fail
+prove5 ERRNO5 prove expect_fail
+prove6 ERRNO6 prove expect_fail
+prove7 ERRNO7 prove expect_fail
+
+[options]
+mode bmc
+depth 200
+
+cover: mode cover
+bmc: mode bmc
+prove: mode prove
+
+expect_fail: expect fail
+
+[engines]
+cover: smtbmc z3
+bmc: abc bmc3
+prove: abc pdr
+
+[script]
+ERRNO0: ghdl --std=08 -gERRNO=0 locker.vhd locker.psl -e locker
+ERRNO1: ghdl --std=08 -gERRNO=1 locker.vhd locker.psl -e locker
+ERRNO2: ghdl --std=08 -gERRNO=2 locker.vhd locker.psl -e locker
+ERRNO3: ghdl --std=08 -gERRNO=3 locker.vhd locker.psl -e locker
+ERRNO4: ghdl --std=08 -gERRNO=4 locker.vhd locker.psl -e locker
+ERRNO5: ghdl --std=08 -gERRNO=5 locker.vhd locker.psl -e locker
+ERRNO6: ghdl --std=08 -gERRNO=6 locker.vhd locker.psl -e locker
+ERRNO7: ghdl --std=08 -gERRNO=7 locker.vhd locker.psl -e locker
+prep -top locker
+
+[files]
+../src_vhdl/locker.vhd
+../src_tb/locker.psl

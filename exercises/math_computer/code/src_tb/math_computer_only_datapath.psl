@@ -1,0 +1,19 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+vunit math_computer_datapath_psl(math_computer) {
+
+    default clock is rising_edge(clk_i);
+    
+    -- If you feel like the ports names are too long, you can use aliases:
+    alias valid_i : std_logic is input_itf_in_i.valid;
+    alias ready_o : std_logic is input_itf_out_o.ready;
+    alias valid_o : std_logic is output_itf_out_o.valid;
+    alias ready_i : std_logic is output_itf_in_i.ready;
+    alias a_i : std_logic_vector(7 downto 0) is input_itf_in_i.a;
+    alias b_i : std_logic_vector(7 downto 0) is input_itf_in_i.b;
+    alias c_i : std_logic_vector(7 downto 0) is input_itf_in_i.c;
+    alias result_o : std_logic_vector(7 downto 0) is output_itf_out_o.result;
+    
+}
