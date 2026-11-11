@@ -79,9 +79,9 @@ begin
                         unlock_o <= '1';
                     end if;
                 elsif keys_i = KEY1 then
-                    state <= s2;
+                    state <= s2b;
                 elsif keys_i = STALL then
-                    state <= s2;
+                    state <= s2b;
                 else
                     state <= s1;
                 end if;
