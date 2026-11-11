@@ -1,0 +1,21 @@
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+vunit locker_psl(locker) {
+
+    default clock is rising_edge(clk_i);
+
+
+    constant NOKEY : std_logic_vector(9 downto 0) := "0000000000";
+    constant KEY1 : std_logic_vector(9 downto 0) := "0000000001";
+    constant KEY2 : std_logic_vector(9 downto 0) := "0000000010";
+    constant KEY3 : std_logic_vector(9 downto 0) := "0000000100";
+    constant KEY4 : std_logic_vector(9 downto 0) := "0000001000";
+    constant KEY5 : std_logic_vector(9 downto 0) := "0000010000";
+
+
+}
+
+
